@@ -8,165 +8,165 @@
     <title>Meu Bolso - Login</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
 
-        body {
-            min-height: 100vh;
-            background: #f4f7fb;
-        }
+    body {
+        min-height: 100vh;
+        background: #f4f7fb;
+    }
 
+    .container {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    /* LADO ESQUERDO */
+    .lado-esquerdo {
+        width: 44%;
+        min-height: 100vh;
+        overflow: hidden;
+    }
+
+    .lado-esquerdo img {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        display: block;
+    }
+
+    /* LADO DIREITO */
+    .lado-direito {
+        width: 56%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
+
+    .login-box {
+        background: white;
+        width: 100%;
+        max-width: 600px;
+        padding: 45px;
+        border-radius: 15px;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .logo {
+        text-align: center;
+        color: #092c50;
+        font-size: 38px;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .logo span {
+        color: #08b889;
+    }
+
+    h1 {
+        color: #092c50;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .subtitulo {
+        color: #7b8da8;
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+    .campo {
+        margin-bottom: 20px;
+    }
+
+    .campo label {
+        display: block;
+        color: #34445a;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .campo input {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #d4deeb;
+        border-radius: 8px;
+        outline: none;
+        font-size: 15px;
+    }
+
+    .campo input:focus {
+        border-color: #08b889;
+    }
+
+    .lembrar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        font-size: 14px;
+    }
+
+    .lembrar a {
+        color: #08b889;
+        text-decoration: none;
+    }
+
+    .btn-entrar {
+        width: 100%;
+        padding: 16px;
+        background: #08b889;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 17px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .btn-criar {
+        display: block;
+        text-align: center;
+        padding: 15px;
+        margin-top: 20px;
+        border: 1px solid #08b889;
+        border-radius: 8px;
+        color: #08b889;
+        text-decoration: none;
+    }
+
+    /* CELULAR */
+    @media (max-width: 800px) {
         .container {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
+            flex-direction: column;
         }
 
-        /* LADO ESQUERDO */
         .lado-esquerdo {
-            width: 44%;
-            min-height: 100vh;
-            overflow: hidden;
+            width: 100%;
+            min-height: auto;
+            height: 350px;
         }
 
         .lado-esquerdo img {
-            width: 100%;
-            height: 100vh;
-            object-fit: cover;
-            display: block;
+            height: 350px;
         }
 
-        /* LADO DIREITO */
         .lado-direito {
-            width: 56%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px;
+            width: 100%;
+            padding: 20px;
         }
 
         .login-box {
-            background: white;
-            width: 100%;
-            max-width: 600px;
-            padding: 45px;
-            border-radius: 15px;
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.06);
+            padding: 25px;
         }
-
-        .logo {
-            text-align: center;
-            color: #092c50;
-            font-size: 38px;
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .logo span {
-            color: #08b889;
-        }
-
-        h1 {
-            color: #092c50;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .subtitulo {
-            color: #7b8da8;
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .campo {
-            margin-bottom: 20px;
-        }
-
-        .campo label {
-            display: block;
-            color: #34445a;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .campo input {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid #d4deeb;
-            border-radius: 8px;
-            outline: none;
-            font-size: 15px;
-        }
-
-        .campo input:focus {
-            border-color: #08b889;
-        }
-
-        .lembrar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-
-        .lembrar a {
-            color: #08b889;
-            text-decoration: none;
-        }
-
-        .btn-entrar {
-            width: 100%;
-            padding: 16px;
-            background: #08b889;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-criar {
-            display: block;
-            text-align: center;
-            padding: 15px;
-            margin-top: 20px;
-            border: 1px solid #08b889;
-            border-radius: 8px;
-            color: #08b889;
-            text-decoration: none;
-        }
-
-        /* CELULAR */
-        @media (max-width: 800px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .lado-esquerdo {
-                width: 100%;
-                min-height: auto;
-                height: 350px;
-            }
-
-            .lado-esquerdo img {
-                height: 350px;
-            }
-
-            .lado-direito {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .login-box {
-                padding: 25px;
-            }
-        }
+    }
     </style>
 </head>
 
