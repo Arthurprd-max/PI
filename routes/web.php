@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
-
-Route::view('/login', 'login');
+Route::get('/tela-primaria', function () {
+    return view('tela-primaria');
+});

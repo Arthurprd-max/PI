@@ -120,15 +120,15 @@
     }
 
     .btn-entrar {
-        width: 100%;
-        padding: 16px;
+        display: block;
+        text-align: center;
+        padding: 15px;
         background: #08b889;
         color: white;
-        border: none;
         border-radius: 8px;
-        font-size: 17px;
-        font-weight: bold;
-        cursor: pointer;
+        text-decoration: none;
+
+
     }
 
     .btn-criar {
@@ -215,9 +215,10 @@
                         <a href="#">Esqueceu a senha?</a>
                     </div>
 
-                    <button type="button" class="btn-entrar">
-                        <i class="bi bi-check-circle-fill"></i> Entrar
-                    </button>
+
+                    <a href="/tela-primaria" class="btn-entrar">
+                        Entrar
+                    </a>
 
                     <a href="#" class="btn-criar">
                         Criar nova conta
