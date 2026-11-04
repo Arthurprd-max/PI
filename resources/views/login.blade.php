@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <title>Meu Bolso - Login</title>
 
     <style>
@@ -17,44 +18,51 @@
 
     body {
         min-height: 100vh;
+        min-height: 100svh;
         background: #f4f7fb;
     }
 
-    .container {
-        display: flex;
+    .login-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
         min-height: 100vh;
+        min-height: 100svh;
         width: 100%;
     }
 
     /* LADO ESQUERDO */
     .lado-esquerdo {
-        width: 44%;
+        position: relative;
+        min-width: 0;
         min-height: 100vh;
+        min-height: 100svh;
         overflow: hidden;
     }
 
     .lado-esquerdo img {
+        position: absolute;
+        inset: 0;
         width: 100%;
-        height: 100vh;
+        height: 100%;
         object-fit: cover;
         display: block;
     }
 
     /* LADO DIREITO */
     .lado-direito {
-        width: 56%;
+        min-width: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 40px;
+        padding: clamp(24px, 5vw, 72px);
     }
 
     .login-box {
         background: white;
         width: 100%;
-        max-width: 600px;
-        padding: 45px;
-        border-radius: 15px;
+        max-width: 520px;
+        padding: clamp(28px, 4vw, 48px);
+        border-radius: 12px;
         box-shadow: 0 5px 30px rgba(0, 0, 0, 0.06);
     }
 
@@ -96,14 +104,17 @@
     .campo input {
         width: 100%;
         padding: 15px;
+        min-height: 52px;
         border: 1px solid #d4deeb;
         border-radius: 8px;
-        outline: none;
         font-size: 15px;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
     }
 
     .campo input:focus {
         border-color: #08b889;
+        outline: 3px solid rgba(8, 184, 137, 0.16);
+        outline-offset: 1px;
     }
 
     .lembrar {
@@ -120,6 +131,7 @@
     }
 
     .btn-entrar {
+        width: 100%;
         display: block;
         text-align: center;
         padding: 15px;
@@ -127,8 +139,15 @@
         color: white;
         border-radius: 8px;
         text-decoration: none;
+        border: 0;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 160ms ease;
+    }
 
-
+    .btn-entrar:hover {
+        background: #079b74;
     }
 
     .btn-criar {
@@ -140,31 +159,42 @@
         border-radius: 8px;
         color: #08b889;
         text-decoration: none;
+        transition: background-color 160ms ease, color 160ms ease;
+    }
+
+    .btn-criar:hover {
+        background: #effbf7;
+        color: #067e60;
     }
 
     /* CELULAR */
     @media (max-width: 800px) {
-        .container {
-            flex-direction: column;
+        .login-layout {
+            grid-template-columns: minmax(0, 1fr);
         }
 
         .lado-esquerdo {
-            width: 100%;
             min-height: auto;
-            height: 350px;
+            aspect-ratio: auto;
         }
 
         .lado-esquerdo img {
-            height: 350px;
+            position: static;
+            height: auto;
+            object-fit: cover;
         }
 
         .lado-direito {
-            width: 100%;
-            padding: 20px;
+            padding: 24px 20px 36px;
         }
 
         .login-box {
-            padding: 25px;
+            padding: 28px 24px;
+        }
+
+        .logo {
+            font-size: clamp(28px, 8vw, 34px);
+            white-space: nowrap;
         }
     }
     </style>
@@ -172,7 +202,7 @@
 
 <body>
 
-    <div class="container">
+    <div class="login-layout">
 
         <!-- IMAGEM DO LADO ESQUERDO -->
         <div class="lado-esquerdo">
@@ -194,17 +224,22 @@
                     Acesse sua conta para acompanhar sua vida financeira.
                 </p>
 
-                <form>
-
+                <form method="POST" action="/login">
+                    @csrf
                     <div class="campo">
                         <label>E-mail</label>
-                        <input type="email" placeholder="Digite seu e-mail">
+                        <input type="email" name="email" placeholder="Digite seu e-mail">
                     </div>
 
                     <div class="campo">
                         <label>Senha</label>
-                        <input type="password" placeholder="Digite sua senha">
+                        <input type="password" name="password" placeholder="Digite sua senha">
                     </div>
+                    @error('email')
+                    <div class="alert alert-danger mt-2">
+                        {{ $message }}
+                    </div>
+                    @enderror
 
                     <div class="lembrar">
                         <label>
@@ -216,9 +251,9 @@
                     </div>
 
 
-                    <a href="/tela-primaria" class="btn-entrar">
+                    <button type="submit" class="btn-entrar">
                         Entrar
-                    </a>
+                    </button>
 
                     <a href="#" class="btn-criar">
                         Criar nova conta
@@ -226,12 +261,14 @@
 
                 </form>
 
+
+
             </div>
 
         </div>
 
     </div>
-    ç
+
 </body>
 
 </html>
