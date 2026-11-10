@@ -1,0 +1,72 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+body {
+    background: #f4f7fb;
+    color: #172554;
+}
+
+/* MENU */
+.menu {
+    background: white;
+    min-height: 100vh;
+    padding: 25px 15px;
+}
+
+.menu a {
+    display: block;
+    padding: 13px;
+    color: #172554;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.menu a:hover,
+.ativo {
+    background: #d1fae5;
+    color: #047857 !important;
+}
+
+/* CARTÕES */
+.cartao {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e5eaf1;
+    height: 100%;
+}
+
+/* VALORES */
+.valor {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.verde {
+    color: #059669;
+}
+
+.vermelho {
+    color: #ef4444;
+}
+
+.azul {
+    color: #2563eb;
+}
+
+.botao {
+    font-size: 20px;
+}
+
+.botao :hover {
+    font-size: 22px;
+}
