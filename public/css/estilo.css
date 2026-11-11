@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Isometra&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.navbar {
+    display: flex;
+    flex-flow: row wrap;
+    background-image: linear-gradient(360deg, #98e8a8, #39c062, #07a542);
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    max-height: 50px;
+    color: #005030;
+}
+
+.logo h1 {
+    font-size: 20px;
+    font-family: "Isometra";
+}
+
+
+.header {
+    display: flex;
+    flex-flow: row wrap;
+    background-color: #f0fdf4;
+    justify-content: center;
+    align-items: center;
+    color: #005030;
+}
+
+.headline {
+    margin-left: 10%;
+    flex: 40%;
+}
+
+.headline h2 {
+    font-size: 50px;
+    padding: 0;
+    margin: 0;
+}
+
+.header p {
+    font-size: 20px;
+    padding: 5px;
+}
+
+.botao {
+    text-decoration: none;
+    background-color: #005030;
+    color: #ffffff;
+    font-size: 24px;
+    padding: 5px 10px;
+    border-radius: 20px;
+}
+
+.botao:hover {
+    background-color: #107e43;
+    font-size: 25px;
+}
+
+.imgheader {
+    flex: 40%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+a {
+    cursor: pointer;
+}
+
+section {
+    display: inline-block;
+    padding: 5%;
+    width: 100%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+}
+
+section h2 {
+    font-size: 36px;
+    text-align: center;
+    color: #005030;
+    font-family: "Isometra";
+}
+
+.servisos {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    color: #005030;
+    display: inline-block;
+    width: 28%;
+    border: 1px solid #005030;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.card h3 {
+    font-size: 24px;
+    padding: 5px;
+}
+
+.card p {
+    text-align: justify;
+    padding: 0px 5px;
+    font-size: 16px;
+}
+
+footer {
+    width: 100%;
+    margin-top: 50px;
+    height: 150px;
+    background-image: linear-gradient(180deg, #98e8a8, #39c062, #07a542);
+    color: #005030;
+    text-align: center;
+    padding: 5px;
+}
+
+footer h2 {
+    font-family: "Isometra";
+}
+
+footer p,
+b {
+    font-size: 12px;
+    margin: 0;
+}

@@ -39,7 +39,7 @@
 
 
                 <a href="#">
-                    <i class="bi bi-bullseye"></i> comfiguração
+                    <i class="bi bi-bullseye"></i> configuração
                 </a>
 
 
@@ -57,7 +57,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
 
                     <div>
-                        <h2 class="fw-bold">Olá, João!</h2>
+                        <h2 class="fw-bold">Olá, Cliente!</h2>
 
                         <p class="text-secondary">
                             Veja como está sua vida financeira.
@@ -352,161 +352,161 @@
 
     <!-- JAVASCRIPT DO SISTEMA -->
     <script>
-    // FORMATAR DINHEIRO
-    function moeda(valor) {
+        // FORMATAR DINHEIRO
+        function moeda(valor) {
 
-        return valor.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
+            return valor.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            });
+
+        }
+
+
+        // CALCULAR SALDO E DISTRIBUIÇÃO
+        function calcularSaldo() {
+
+            let renda = Number(document.getElementById('rendas').value) || 0;
+
+            let despesa = Number(document.getElementById('despesas').value) || 0;
+
+            let saldo = renda - despesa;
+
+            let restante = Math.max(saldo, 0);
+
+
+            // MOSTRAR SALDO
+            document.getElementById('saldo').innerHTML = moeda(saldo);
+
+
+            // MOSTRAR DINHEIRO RESTANTE
+            document.getElementById('dinheiroRestante').innerHTML = moeda(restante);
+
+
+            // DIVIDIR O DINHEIRO
+            let sos = restante * 0.40;
+
+            let investimento = restante * 0.35;
+
+            let lazer = restante * 0.25;
+
+
+            // MOSTRAR DIVISÃO
+            document.getElementById('valorSOS').innerHTML = moeda(sos);
+
+            document.getElementById('valorInvestimento').innerHTML = moeda(investimento);
+
+            document.getElementById('valorLazer').innerHTML = moeda(lazer);
+
+        }
+
+
+        // ATUALIZAR QUANDO ALTERAR OS VALORES
+        document.getElementById('rendas').addEventListener('input', calcularSaldo);
+
+        document.getElementById('despesas').addEventListener('input', calcularSaldo);
+
+
+        // CADASTRAR NOVA DESPESA
+        document.getElementById('formDespesa').addEventListener('submit', function(event) {
+
+            event.preventDefault();
+
+
+            // PEGAR OS DADOS
+            let nome = document.getElementById('nomeDespesa').value;
+
+            let valor = Number(document.getElementById('valorDespesa').value);
+
+            let data = document.getElementById('dataDespesa').value;
+
+            let categoria = document.getElementById('categoriaDespesa').value;
+
+
+            // VERIFICAR VALOR
+            if (valor <= 0) {
+
+                alert('Digite um valor válido!');
+
+                return;
+
+            }
+
+
+            // SOMAR DESPESA
+            let despesas = Number(document.getElementById('despesas').value) || 0;
+
+            document.getElementById('despesas').value = despesas + valor;
+
+
+            // REMOVER MENSAGEM DE LISTA VAZIA
+            let mensagem = document.getElementById('mensagemVazia');
+
+            if (mensagem) {
+                mensagem.remove();
+            }
+
+
+            // CRIAR NOVA DESPESA
+            let lista = document.getElementById('listaDespesas');
+
+            let item = document.createElement('div');
+
+            item.className = 'mb-3';
+
+
+            // NOME E VALOR
+            let linha = document.createElement('div');
+
+            linha.className = 'd-flex justify-content-between';
+
+            let descricao = document.createElement('span');
+
+            descricao.innerHTML = nome + ' - ' + categoria;
+
+            let preco = document.createElement('strong');
+
+            preco.innerHTML = moeda(valor);
+
+            linha.appendChild(descricao);
+
+            linha.appendChild(preco);
+
+
+            // DATA
+            let dataTexto = document.createElement('small');
+
+            dataTexto.className = 'text-secondary';
+
+            dataTexto.innerHTML = 'Data: ' + data.split('-').reverse().join('/');
+
+
+            // ADICIONAR NA LISTA
+            item.appendChild(linha);
+
+            item.appendChild(dataTexto);
+
+            lista.appendChild(item);
+
+
+            // ATUALIZAR SALDO E DISTRIBUIÇÃO
+            calcularSaldo();
+
+
+            // LIMPAR FORMULÁRIO
+            document.getElementById('formDespesa').reset();
+
+
+            // FECHAR MODAL
+            bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('exampleModal')
+            ).hide();
+
         });
 
-    }
 
-
-    // CALCULAR SALDO E DISTRIBUIÇÃO
-    function calcularSaldo() {
-
-        let renda = Number(document.getElementById('rendas').value) || 0;
-
-        let despesa = Number(document.getElementById('despesas').value) || 0;
-
-        let saldo = renda - despesa;
-
-        let restante = Math.max(saldo, 0);
-
-
-        // MOSTRAR SALDO
-        document.getElementById('saldo').innerHTML = moeda(saldo);
-
-
-        // MOSTRAR DINHEIRO RESTANTE
-        document.getElementById('dinheiroRestante').innerHTML = moeda(restante);
-
-
-        // DIVIDIR O DINHEIRO
-        let sos = restante * 0.40;
-
-        let investimento = restante * 0.35;
-
-        let lazer = restante * 0.25;
-
-
-        // MOSTRAR DIVISÃO
-        document.getElementById('valorSOS').innerHTML = moeda(sos);
-
-        document.getElementById('valorInvestimento').innerHTML = moeda(investimento);
-
-        document.getElementById('valorLazer').innerHTML = moeda(lazer);
-
-    }
-
-
-    // ATUALIZAR QUANDO ALTERAR OS VALORES
-    document.getElementById('rendas').addEventListener('input', calcularSaldo);
-
-    document.getElementById('despesas').addEventListener('input', calcularSaldo);
-
-
-    // CADASTRAR NOVA DESPESA
-    document.getElementById('formDespesa').addEventListener('submit', function(event) {
-
-        event.preventDefault();
-
-
-        // PEGAR OS DADOS
-        let nome = document.getElementById('nomeDespesa').value;
-
-        let valor = Number(document.getElementById('valorDespesa').value);
-
-        let data = document.getElementById('dataDespesa').value;
-
-        let categoria = document.getElementById('categoriaDespesa').value;
-
-
-        // VERIFICAR VALOR
-        if (valor <= 0) {
-
-            alert('Digite um valor válido!');
-
-            return;
-
-        }
-
-
-        // SOMAR DESPESA
-        let despesas = Number(document.getElementById('despesas').value) || 0;
-
-        document.getElementById('despesas').value = despesas + valor;
-
-
-        // REMOVER MENSAGEM DE LISTA VAZIA
-        let mensagem = document.getElementById('mensagemVazia');
-
-        if (mensagem) {
-            mensagem.remove();
-        }
-
-
-        // CRIAR NOVA DESPESA
-        let lista = document.getElementById('listaDespesas');
-
-        let item = document.createElement('div');
-
-        item.className = 'mb-3';
-
-
-        // NOME E VALOR
-        let linha = document.createElement('div');
-
-        linha.className = 'd-flex justify-content-between';
-
-        let descricao = document.createElement('span');
-
-        descricao.innerHTML = nome + ' - ' + categoria;
-
-        let preco = document.createElement('strong');
-
-        preco.innerHTML = moeda(valor);
-
-        linha.appendChild(descricao);
-
-        linha.appendChild(preco);
-
-
-        // DATA
-        let dataTexto = document.createElement('small');
-
-        dataTexto.className = 'text-secondary';
-
-        dataTexto.innerHTML = 'Data: ' + data.split('-').reverse().join('/');
-
-
-        // ADICIONAR NA LISTA
-        item.appendChild(linha);
-
-        item.appendChild(dataTexto);
-
-        lista.appendChild(item);
-
-
-        // ATUALIZAR SALDO E DISTRIBUIÇÃO
+        // CALCULAR AO ABRIR A PÁGINA
         calcularSaldo();
-
-
-        // LIMPAR FORMULÁRIO
-        document.getElementById('formDespesa').reset();
-
-
-        // FECHAR MODAL
-        bootstrap.Modal.getOrCreateInstance(
-            document.getElementById('exampleModal')
-        ).hide();
-
-    });
-
-
-    // CALCULAR AO ABRIR A PÁGINA
-    calcularSaldo();
     </script>
 
 </body>
