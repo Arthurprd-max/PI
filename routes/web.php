@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('tela-inicial');
 })->name('tela-inicial');
 
-route::get('/login', function () {
+Route::get('/login', function () {
     return view('login');
 })->name('login');
 
@@ -37,5 +37,10 @@ Route::middleware('auth')->group(function () {
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    });
+    Route::get('/tema', function () {
+        $atual = session('tema', 'light');
+        session(['tema' => $atual === 'dark' ? 'light' : 'dark']);
+        return back();
     });
 });
