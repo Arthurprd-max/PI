@@ -1,0 +1,207 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+body {
+    background: #f4f7fb;
+    color: #172554;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* MENU */
+.menu {
+    background: white;
+    min-height: 100vh;
+    padding: 25px 15px;
+}
+
+@media (min-width: 768px) {
+    .menu {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 1020;
+    }
+
+    .painel-principal {
+        flex: 0 0 83.333333%;
+        width: 83.333333%;
+        margin-left: 16.666667%;
+    }
+}
+
+.menu a {
+    display: block;
+    padding: 13px;
+    color: #172554;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.menu a:hover,
+.ativo {
+    background: #d1fae5;
+    color: #047857 !important;
+}
+
+/* CARTÕES */
+.cartao {
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid #e5eaf1;
+    height: 100%;
+}
+
+#resumo-despesas {
+    scroll-margin-top: 24px;
+}
+
+/* VALORES */
+.valor {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.verde {
+    color: #059669;
+}
+
+.vermelho {
+    color: #ef4444;
+}
+
+.azul {
+    color: #2563eb;
+}
+
+.botao {
+    font-size: 20px;
+}
+
+.botao :hover {
+    font-size: 22px;
+}
+
+.botao-nova-despesa {
+    transition: padding 160ms ease;
+}
+
+.botao-nova-despesa:hover {
+    padding-block: calc(var(--bs-btn-padding-y) + 1px);
+    padding-inline: calc(var(--bs-btn-padding-x) + 1px);
+}
+
+.menu-sair {
+    width: 100%;
+    text-align: left;
+    padding: 13px;
+    color: #172554;
+    text-decoration: none;
+    transition: color 160ms ease, background-color 160ms ease;
+}
+
+.menu-sair:hover {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+html[data-bs-theme='dark'] body {
+    background: #0f172a;
+    color: #e2e8f0;
+    color-scheme: dark;
+}
+
+html[data-bs-theme='dark'] .menu {
+    background: #111827;
+    border-right: 1px solid #263449;
+}
+
+html[data-bs-theme='dark'] .menu a,
+html[data-bs-theme='dark'] .menu-sair {
+    color: #cbd5e1;
+}
+
+html[data-bs-theme='dark'] .menu a:hover,
+html[data-bs-theme='dark'] .menu a.ativo {
+    background: #123b32;
+    color: #6ee7b7 !important;
+}
+
+html[data-bs-theme='dark'] .menu-sair:hover {
+    background: #4c1d24;
+    color: #fda4af;
+}
+
+html[data-bs-theme='dark'] .cartao {
+    background: #172033;
+    border-color: #2a384e;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+}
+
+html[data-bs-theme='dark'] .text-secondary {
+    color: #a7b4c7 !important;
+}
+
+html[data-bs-theme='dark'] .verde {
+    color: #34d399;
+}
+
+html[data-bs-theme='dark'] .vermelho {
+    color: #fb7185;
+}
+
+html[data-bs-theme='dark'] .azul {
+    color: #60a5fa;
+}
+
+html[data-bs-theme='dark'] .form-control,
+html[data-bs-theme='dark'] .form-select {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html[data-bs-theme='dark'] .form-control::placeholder {
+    color: #94a3b8;
+}
+
+html[data-bs-theme='dark'] .form-control:focus,
+html[data-bs-theme='dark'] .form-select:focus {
+    background-color: #0f172a;
+    border-color: #34d399;
+    color: #f8fafc;
+    box-shadow: 0 0 0 0.25rem rgba(52, 211, 153, 0.2);
+}
+
+html[data-bs-theme='dark'] .modal-content {
+    background: #172033;
+    border-color: #2a384e;
+    color: #e2e8f0;
+}
+
+html[data-bs-theme='dark'] .modal-header,
+html[data-bs-theme='dark'] .modal-footer {
+    border-color: #2a384e;
+}
+
+html[data-bs-theme='dark'] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+html[data-bs-theme='dark'] .progress {
+    background-color: #334155;
+}

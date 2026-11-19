@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="apenas aprendendo funções basicas do html">
     <meta name="keybords" content="HTML, CSS">
-    <link rel="stylesheet" href="css/estilo.css">
-    <link rel="stylesheet" href="css/responsivo.css">
+    @vite(['resources/css/inicial.css', 'resources/css/responsivo.css'])
     <title>Aula de HTML e CSS(tags e estilos)</title>
 </head>
 
@@ -24,14 +23,14 @@
             <p>Gerenciar o próprio dinheiro não precisa ser um trabalho difícil. Desenvolvemos a ferramenta perfeita
                 para você acompanhar seus ganhos, categorizar seus gastos e visualizar seus investimentos de forma
                 rápida e inteligente. Assuma o volante da sua vida financeira agora mesmo.</p>
-            <a class="botao" href="{{ route('login') }}">COMECE AGORA</a>
+            <a class="botao" href="{{ route('cadastro') }}">COMECE AGORA</a>
         </div>
         <div class="imgheader">
             <img style="max-width: 90%;" src="imagens/ab5df44c-2cf5-48b2-a772-dbc15e1f29e9.png">
         </div>
         <section>
             <h2>
-                O que podemos fazer pelo seu negocio?
+                O que podemos fazer pelo seu bolso?
             </h2>
             <div class="servisos">
                 <div class="card">
@@ -71,7 +70,7 @@
         </section>
         <footer>
             <h2>Meu Bolso</h2>
-            <p>um site teste, feito com HTML e CSS puro</p>
+            <p>Cuidando do seu bolso de um jeito simples e inteligente.</p>
             <b>©todos direitos reservados</b>
         </footer>
     </header>

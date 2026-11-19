@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-bs-theme="{{ session('tema', 'light') }}">
 
 <head>
     <meta charset="UTF-8">
@@ -7,20 +7,17 @@
 
     <title>Meu Bolso</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Ícones -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    @vite('resources/js/app.js')
+    @vite(['resources/js/app.js', 'resources/css/app.css'])
 
 </head>
 
-<body>
+<body id="inicio-pagina">
 
     <div class="container-fluid">
 
@@ -33,25 +30,31 @@
                     <i class="bi bi-wallet2"></i> Meu Bolso
                 </h4>
 
-                <a href="#" class="ativo">
+                <a href="#inicio-pagina">
                     <i class="bi bi-house"></i> Início
                 </a>
 
+                <a href="#resumo-despesas">
+                    <i class="bi bi-card-list"></i> Resumo
+                </a>
 
-                <a href="#">
-                    <i class="bi bi-bullseye"></i> configuração
+                <a href="{{ route('tema') }}">
+                    <i class="bi bi-circle-half"></i> Alternar tema
                 </a>
 
 
-                <a href="#">
-                    <i class="bi bi-box-arrow-left"></i> Sair
-                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="btn btn-link menu-sair">
+                        <i class="bi bi-box-arrow-left"></i> Sair
+                    </button>
+                </form>
 
             </div>
 
 
             <!-- PAINEL -->
-            <div class="col-md-10 p-4">
+            <div class="col-md-10 p-4 painel-principal">
 
                 <!-- CABEÇALHO -->
                 <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
@@ -64,7 +67,7 @@
                         </p>
                     </div>
 
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-success botao-nova-despesa" data-bs-toggle="modal" data-bs-target="#exampleModal">
 
                         <i class="bi bi-plus-circle"></i> Nova despesa
 
@@ -320,22 +323,20 @@
                     </div>
 
 
+                </div>
 
+                <!-- RESUMO DAS DESPESAS -->
+                <div class="cartao mb-4" id="resumo-despesas">
 
-                    <!-- RESUMO DAS DESPESAS -->
-                    <div class="cartao mb-4">
+                    <h5 class="fw-bold mb-3">
+                        Resumo das despesas
+                    </h5>
 
-                        <h5 class="fw-bold mb-3">
-                            Resumo das despesas
-                        </h5>
+                    <div id="listaDespesas">
 
-                        <div id="listaDespesas">
-
-                            <p class="text-secondary" id="mensagemVazia">
-                                Nenhuma despesa cadastrada.
-                            </p>
-
-                        </div>
+                        <p class="text-secondary" id="mensagemVazia">
+                            Nenhuma despesa cadastrada.
+                        </p>
 
                     </div>
 
