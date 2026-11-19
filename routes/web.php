@@ -13,34 +13,61 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', function (Request $request) {
-    $dados = $request->validate([
+    $credenciais = $request->validate([
         'email' => 'required|email',
         'password' => 'required',
+        'remember' => 'nullable|boolean',
     ]);
 
-    if (Auth::attempt($dados)) {
+    $lembrar = $request->boolean('remember');
+
+    if (Auth::attempt([
+        'email' => $credenciais['email'],
+        'password' => $credenciais['password'],
+    ], $lembrar)) {
         $request->session()->regenerate();
-        return redirect('tela-primaria');
+        return redirect()->intended(route('tela-primaria'));
     }
 
     return back()->withErrors([
         'email' => 'Senha ou E-mail inválido.',
+    ])->onlyInput('email');
+})->name('login.store');
+
+Route::get('/cadastro', function () {
+    return view('tela-de-cadastro');
+})->name('cadastro');
+
+Route::post('/cadastro', function (Request $request) {
+    $dados = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email',
+        'password' => 'required|string|min:4|confirmed',
     ]);
-});
+
+    $usuario = \App\Models\User::create($dados);
+
+    Auth::login($usuario);
+    $request->session()->regenerate();
+
+    return redirect()->route('tela-primaria');
+})->name('cadastro.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/tela-primaria', function () {
         return view('tela-primaria');
-    });
+    })->name('tela-primaria');
+
     Route::post('/logout', function (Request $request) {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
-    });
-    Route::get('/tema', function () {
-        $atual = session('tema', 'light');
-        session(['tema' => $atual === 'dark' ? 'light' : 'dark']);
-        return back();
-    });
+        return redirect()->route('tela-inicial');
+    })->name('logout');
 });
+
+Route::get('/tema', function () {
+    $atual = session('tema', 'light');
+    session(['tema' => $atual === 'dark' ? 'light' : 'dark']);
+    return back();
+})->name('tema');
