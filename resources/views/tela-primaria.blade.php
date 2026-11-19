@@ -23,9 +23,9 @@
         <div class="row">
 
             <!-- MENU -->
-            <div class="col-md-2 menu" style="background-color: #102840;">
+            <div class="col-md-2 menu">
 
-                <h4 class="mb-4 text-white">
+                <h4 class="mb-4 text-#172554">
                     <i class="bi bi-wallet2"></i> Meu <span class="text-success">Bolso</span>
                 </h4>
 
