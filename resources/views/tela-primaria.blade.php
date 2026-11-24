@@ -263,6 +263,7 @@
                     </div>
 
 
+
                     <!-- SOS -->
                     <div class="mb-3">
 
@@ -324,6 +325,303 @@
 
 
                 </div>
+
+
+                <div class="cartao-meta">
+
+                    <div class="meta-cabecalho d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">🎯 Minhas Metas</h5>
+                            <small>Acompanhe seus objetivos financeiros</small>
+                        </div>
+
+                        <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modalNovaMeta">
+                            + Nova meta
+                        </button>
+                    </div>
+
+                    <div class="meta-conteudo">
+
+                        <!-- SALDO -->
+                        <div class="meta-saldo mb-4">
+                            <small>Saldo disponível</small>
+                            <h3 id="saldoDisponivel">R$ 0,00</h3>
+                        </div>
+
+                        <!-- META -->
+                        <div id="listaMetas">
+
+                            <div class="meta-item">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="meta-titulo mb-1">
+                                        Minha primeira meta
+                                    </h5>
+
+                                    <span class="meta-percentual">0%</span>
+                                </div>
+
+                                <p class="meta-valor">
+                                    <span class="valorGuardado">R$ 0,00</span>
+                                    /
+                                    <span class="valorObjetivo">R$ 0,00</span>
+                                </p>
+
+                                <div class="meta-progresso">
+                                    <div class="progress-bar" style="width: 0%"></div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mt-3">
+                                    <small>Valor guardado</small>
+                                    <strong class="valorGuardado">R$ 0,00</strong>
+                                </div>
+
+                                <button class="btn btn-success w-100 mt-3" onclick="abrirTransferencia(0)">
+                                    Guardar dinheiro
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <!-- MODAL NOVA META -->
+                <div class="modal fade" id="modalNovaMeta" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Criar nova meta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <label class="form-label">Nome da meta</label>
+                                <input type="text" id="nomeMeta" class="form-control mb-3"
+                                    placeholder="Ex: Comprar uma moto">
+
+                                <label class="form-label">Valor desejado</label>
+                                <input type="number" id="objetivoMeta" class="form-control" placeholder="0,00"
+                                    min="0.01" step="0.01">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn btn-success" onclick="criarMeta()">
+                                    Criar meta
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- MODAL TRANSFERÊNCIA -->
+                <div class="modal fade" id="modalTransferencia" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Guardar dinheiro</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <p>Saldo disponível:</p>
+
+                                <h4 id="saldoModal">R$ 0,00</h4>
+
+                                <label class="form-label mt-3">
+                                    Quanto deseja transferir?
+                                </label>
+
+                                <input type="number" id="valorTransferencia" class="form-control" placeholder="0,00"
+                                    min="0.01" step="0.01">
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+
+                                <button class="btn btn-success" onclick="transferirDinheiro()">
+                                    Confirmar transferência
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <script>
+                let saldo = 0;
+
+                let metas = [{
+                    nome: 'Minha primeira meta',
+                    objetivo: 0,
+                    guardado: 0
+                }];
+
+                let metaSelecionada = 0;
+
+                function dinheiro(valor) {
+                    return Number(valor).toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                }
+
+                function atualizarSaldo() {
+                    document.getElementById('saldoDisponivel').textContent =
+                        dinheiro(saldo);
+                }
+
+                function renderizarMetas() {
+
+                    const lista = document.getElementById('listaMetas');
+
+                    lista.innerHTML = '';
+
+                    metas.forEach((meta, index) => {
+
+                        const porcentagem = meta.objetivo > 0 ?
+                            Math.min((meta.guardado / meta.objetivo) * 100, 100) :
+                            0;
+
+                        lista.innerHTML += `
+            <div class="meta-item mb-4">
+
+                <div class="d-flex justify-content-between">
+                    <h5 class="meta-titulo">${meta.nome}</h5>
+
+                    <strong class="meta-percentual">
+                        ${porcentagem.toFixed(0)}%
+                    </strong>
+                </div>
+
+                <p class="meta-valor">
+                    ${dinheiro(meta.guardado)}
+                    /
+                    ${dinheiro(meta.objetivo)}
+                </p>
+
+                <div class="meta-progresso">
+                    <div class="progress-bar"
+                         style="width: ${porcentagem}%">
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <small>Guardado</small>
+                    <strong>${dinheiro(meta.guardado)}</strong>
+                </div>
+
+                <button class="btn btn-success w-100 mt-3"
+                        onclick="abrirTransferencia(${index})">
+                    Guardar dinheiro
+                </button>
+
+            </div>
+        `;
+
+                    });
+
+                    atualizarSaldo();
+                }
+
+                function criarMeta() {
+
+                    const nome = document.getElementById('nomeMeta').value.trim();
+
+                    const objetivo = Number(
+                        document.getElementById('objetivoMeta').value
+                    );
+
+                    if (!nome || !Number.isFinite(objetivo) || objetivo <= 0) {
+                        alert('Preencha o nome e um valor válido para a meta.');
+                        return;
+                    }
+
+                    metas.push({
+                        nome: nome,
+                        objetivo: objetivo,
+                        guardado: 0
+                    });
+
+                    document.getElementById('nomeMeta').value = '';
+                    document.getElementById('objetivoMeta').value = '';
+
+                    bootstrap.Modal.getInstance(
+                        document.getElementById('modalNovaMeta')
+                    ).hide();
+
+                    renderizarMetas();
+                }
+
+                function abrirTransferencia(index) {
+
+                    metaSelecionada = index;
+
+                    document.getElementById('saldoModal').textContent =
+                        dinheiro(saldo);
+
+                    document.getElementById('valorTransferencia').value = '';
+
+                    bootstrap.Modal.getOrCreateInstance(
+                        document.getElementById('modalTransferencia')
+                    ).show();
+                }
+
+                function transferirDinheiro() {
+
+                    const valor = Number(
+                        document.getElementById('valorTransferencia').value
+                    );
+
+                    if (!Number.isFinite(valor) || valor <= 0) {
+                        alert('Digite um valor válido.');
+                        return;
+                    }
+
+                    if (valor > saldo) {
+                        alert('Você não possui saldo suficiente.');
+                        return;
+                    }
+
+                    const meta = metas[metaSelecionada];
+
+                    if (meta.guardado + valor > meta.objetivo) {
+                        alert('Esse valor ultrapassa o objetivo da meta.');
+                        return;
+                    }
+
+                    saldo -= valor;
+
+                    meta.guardado += valor;
+
+                    bootstrap.Modal.getInstance(
+                        document.getElementById('modalTransferencia')
+                    ).hide();
+
+                    renderizarMetas();
+
+                    alert('Transferência realizada com sucesso!');
+                }
+
+                renderizarMetas();
+                </script>
 
                 <!-- RESUMO DAS DESPESAS -->
                 <div class="cartao mb-4" id="resumo-despesas">

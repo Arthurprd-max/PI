@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EntradaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('tela-primaria');
+    return view('tela-inicial');
 })->name('tela-inicial');
 
 Route::get('/login', function () {
@@ -71,3 +72,15 @@ Route::get('/tema', function () {
     session(['tema' => $atual === 'dark' ? 'light' : 'dark']);
     return back();
 })->name('tema');
+
+Route::get('/entradas', [EntradaController::class, 'index'])
+    ->name('entradas.index');
+
+Route::post('/entradas', [EntradaController::class, 'store'])
+    ->name('entradas.store');
+
+Route::put('/entradas/{entrada}/valor', [EntradaController::class, 'atualizarValor'])
+    ->name('entradas.valor');
+
+Route::patch('/entradas-mensais/{entradaMensal}/recebida', [EntradaController::class, 'recebida'])
+    ->name('entradas.recebida');
