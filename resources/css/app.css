@@ -116,9 +116,24 @@ body {
     padding: 16px;
     border-radius: 20px;
     border: 1px solid var(--cor-borda);
-    height: 100%;
+    height: auto;
     box-shadow: 0 4px 12px var(--cor-sombra);
     transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cartao-cabecalho {
+    background: var(--cor-menu);
+    color: white;
+    padding: 18px;
+    margin: -16px -16px 16px;
+    border-radius: 19px 19px 0 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.cartao-cabecalho small {
+    display: block;
+    opacity: 60%;
 }
 
 .cartao:hover {
@@ -193,8 +208,9 @@ body {
     border: 1px solid var(--cor-borda);
     border-radius: 20px;
     overflow: hidden;
-    height: 100%;
+    height: auto;
     box-shadow: 0 4px 12px var(--cor-sombra);
+    margin-bottom: 20px;
 }
 
 /* CABEÇALHO DA META */
@@ -205,6 +221,10 @@ body {
     padding: 18px;
     font-size: 20px;
     font-weight: 600;
+}
+
+.meta-cabecalho small {
+    opacity: 60%;
 }
 
 /* CONTEÚDO */
@@ -235,7 +255,9 @@ body {
     overflow: hidden;
 }
 
-.meta-progresso .progress-bar {
+.meta-progresso-preenchimento {
+    display: block;
+    height: 100%;
     background: var(--cor-verde);
     border-radius: 20px;
     transition: width 0.5s ease;
@@ -366,6 +388,15 @@ html[data-bs-theme='dark'] .azul {
     color: #A8C7A5;
 }
 
+html[data-bs-theme='dark'] .menu h4 .bi-wallet2,
+html[data-bs-theme='dark'] .cartao .bi-wallet-fill {
+    color: #F5EBDD;
+}
+
+html[data-bs-theme='dark'] .menu h4 .marca-meu {
+    color: #F5EBDD;
+}
+
 /* METAS ESCURAS */
 
 html[data-bs-theme='dark'] .meta-cabecalho {
@@ -390,7 +421,7 @@ html[data-bs-theme='dark'] .meta-progresso {
     background: #405344;
 }
 
-html[data-bs-theme='dark'] .meta-progresso .progress-bar {
+html[data-bs-theme='dark'] .meta-progresso-preenchimento {
     background: #78A77B;
 }
 

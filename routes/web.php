@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('tela-inicial');
+    return view('tela-primaria');
 })->name('tela-inicial');
 
 Route::get('/login', function () {

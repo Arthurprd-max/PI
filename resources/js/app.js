@@ -49,6 +49,9 @@ function calcularSaldo() {
     let restante = Math.max(saldo, 0);
 
     document.getElementById('saldo').innerHTML = moeda(saldo);
+    document.dispatchEvent(new CustomEvent('saldo-financeiro-atualizado', {
+        detail: { saldo }
+    }));
 
     document.getElementById('dinheiroRestante').innerHTML = moeda(restante);
 

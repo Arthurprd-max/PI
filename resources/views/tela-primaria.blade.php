@@ -26,7 +26,7 @@
             <div class="col-md-2 menu">
 
                 <h4 class="mb-4 text-#172554">
-                    <i class="bi bi-wallet2"></i> Meu <span class="text-success">Bolso</span>
+                    <i class="bi bi-wallet2"></i> <span class="marca-meu">Meu</span> <span class="text-success">Bolso</span>
                 </h4>
 
                 <a href="#inicio-pagina">
@@ -35,6 +35,10 @@
 
                 <a href="#resumo-despesas">
                     <i class="bi bi-card-list"></i> Resumo
+                </a>
+
+                <a href="#metas">
+                    <i class="bi bi-bullseye"></i> Metas
                 </a>
 
                 <a href="{{ route('tema') }}">
@@ -235,16 +239,16 @@
                 <!-- DISTRIBUIÇÃO DO DINHEIRO -->
                 <div class="cartao mb-4">
 
-                    <h5 class="fw-bold mb-2">
+                    <div class="cartao-cabecalho">
 
-                        <i class="bi bi-pie-chart-fill verde"></i>
-                        Distribuição do dinheiro
+                        <h3><i class="bi bi-pie-chart-fill" style="padding-right:10px;"></i>Distribuição do dinheiro
+                        </h3>
+                        <small>
+                            Veja como seu dinheiro restante será dividido.
+                        </small>
+                    </div>
 
-                    </h5>
 
-                    <p class="text-secondary">
-                        Veja como seu dinheiro restante será dividido.
-                    </p>
 
                     <h3 class="fw-bold verde mb-4" id="dinheiroRestante">
                         R$ 0,00
@@ -327,11 +331,11 @@
                 </div>
 
 
-                <div class="cartao-meta">
+                <div class="cartao-meta" id="metas">
 
                     <div class="meta-cabecalho d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="mb-1">🎯 Minhas Metas</h5>
+                            <h3 class="mb-1">🎯 Minhas Metas</h3>
                             <small>Acompanhe seus objetivos financeiros</small>
                         </div>
 
@@ -348,41 +352,7 @@
                             <h3 id="saldoDisponivel">R$ 0,00</h3>
                         </div>
 
-                        <!-- META -->
-                        <div id="listaMetas">
-
-                            <div class="meta-item">
-
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="meta-titulo mb-1">
-                                        Minha primeira meta
-                                    </h5>
-
-                                    <span class="meta-percentual">0%</span>
-                                </div>
-
-                                <p class="meta-valor">
-                                    <span class="valorGuardado">R$ 0,00</span>
-                                    /
-                                    <span class="valorObjetivo">R$ 0,00</span>
-                                </p>
-
-                                <div class="meta-progresso">
-                                    <div class="progress-bar" style="width: 0%"></div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mt-3">
-                                    <small>Valor guardado</small>
-                                    <strong class="valorGuardado">R$ 0,00</strong>
-                                </div>
-
-                                <button class="btn btn-success w-100 mt-3" onclick="abrirTransferencia(0)">
-                                    Guardar dinheiro
-                                </button>
-
-                            </div>
-
-                        </div>
+                        <div id="listaMetas"></div>
 
                     </div>
                 </div>
@@ -466,15 +436,12 @@
 
 
                 <script>
-                let saldo = 0;
+                let saldoBase = 0;
 
-                let metas = [{
-                    nome: 'Minha primeira meta',
-                    objetivo: 0,
-                    guardado: 0
-                }];
+                let metas = [];
 
                 let metaSelecionada = 0;
+                let saldo = 0;
 
                 function dinheiro(valor) {
                     return Number(valor).toLocaleString('pt-BR', {
@@ -484,9 +451,20 @@
                 }
 
                 function atualizarSaldo() {
+                    const totalGuardado = metas.reduce(
+                        (total, meta) => total + Number(meta.guardado || 0),
+                        0
+                    );
+
+                    saldo = Math.max(saldoBase - totalGuardado, 0);
                     document.getElementById('saldoDisponivel').textContent =
                         dinheiro(saldo);
                 }
+
+                document.addEventListener('saldo-financeiro-atualizado', (event) => {
+                    saldoBase = Math.max(Number(event.detail.saldo) || 0, 0);
+                    atualizarSaldo();
+                });
 
                 function renderizarMetas() {
 
@@ -518,7 +496,7 @@
                 </p>
 
                 <div class="meta-progresso">
-                    <div class="progress-bar"
+                    <div class="meta-progresso-preenchimento"
                          style="width: ${porcentagem}%">
                     </div>
                 </div>
@@ -626,9 +604,10 @@
                 <!-- RESUMO DAS DESPESAS -->
                 <div class="cartao mb-4" id="resumo-despesas">
 
-                    <h5 class="fw-bold mb-3">
-                        Resumo das despesas
-                    </h5>
+                    <div class="cartao-cabecalho">
+
+                        <h3><i class="bi bi-card-list" style="padding-right:10px;"></i>Resumo das despesas</h3>
+                    </div>
 
                     <div id="listaDespesas">
 
