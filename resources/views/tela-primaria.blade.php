@@ -26,7 +26,8 @@
             <div class="col-md-2 menu">
 
                 <h4 class="mb-4 text-#172554">
-                    <i class="bi bi-wallet2"></i> <span class="marca-meu">Meu</span> <span class="text-success">Bolso</span>
+                    <i class="bi bi-wallet2"></i> <span class="marca-meu">Meu</span> <span
+                        class="text-success">Bolso</span>
                 </h4>
 
                 <a href="#inicio-pagina">
@@ -54,8 +55,6 @@
                 </form>
 
             </div>
-
-
             <!-- PAINEL -->
             <div class="col-md-10 p-4 painel-principal">
 
@@ -79,6 +78,72 @@
 
                 </div>
 
+                <h1>Minhas Rendas</h1>
+
+                @if(session('sucesso'))
+                <p>{{ session('sucesso') }}</p>
+                @endif
+
+                @if($errors->any())
+                @foreach($errors->all() as $erro)
+                <p>{{ $erro }}</p>
+                @endforeach
+                @endif
+
+                <h2>Adicionar nova renda</h2>
+
+                <form action="{{ route('entradas.store') }}" method="POST">
+
+                    <label>Nome da renda</label>
+                    <input type="text" name="descricao" placeholder="Ex: Emprego 1" required>
+
+                    <label>Valor mensal</label>
+                    <input type="number" name="valor" step="0.01" min="0.01" placeholder="Ex: 1800" required>
+
+                    <label>Tipo de renda</label>
+                    <select name="tipo" required>
+                        <option value="fixa">Renda fixa</option>
+                        <option value="variavel">Renda variável</option>
+                    </select>
+
+                    <button type="submit">Salvar renda</button>
+                </form>
+
+                <hr>
+
+                <h2>Rendas deste mês</h2>
+
+                @foreach($rendasMensais as $renda)
+                <div>
+                    <h3>{{ $renda->descricao }}</h3>
+
+                    @foreach($renda->valoresMensais as $mensal)
+                    <p>
+                        Valor:
+                        R$ {{ number_format($mensal->valor, 2, ',', '.') }}
+                    </p>
+
+                    <p>
+                        {{ $mensal->recebida ? 'Recebida' : 'Aguardando recebimento' }}
+                    </p>
+
+                    <form action="{{ route('rendas.recebida', $mensal) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+
+                        <button type="submit">
+                            {{ $mensal->recebida ? 'Desmarcar recebimento' : 'Marcar como recebida' }}
+                        </button>
+                    </form>
+                    @endforeach
+                </div>
+                <hr>
+                @endforeach
+
+                <h2>
+                    Total de rendas:
+                    R$ {{ number_format($totalRendas, 2, ',', '.') }}
+                </h2>
 
                 <!-- MODAL DE DESPESA -->
                 <div class="modal fade" id="exampleModal" tabindex="-1">
@@ -193,7 +258,7 @@
 
                             Rendas
 
-                            <input type="number" id="rendas" class="form-control mt-2" value="0" min="0" step="0.01">
+                            <input type="number" id="rendas" class="form-control mt-2" value="" min="" step="0.01">
 
                         </div>
 
@@ -209,7 +274,7 @@
 
                             Despesas
 
-                            <input type="number" id="despesas" class="form-control mt-2" value="0" min="0" step="0.01">
+                            <input type="number" id="despesas" class="form-control mt-2" value="" min="" step="0.01">
 
                         </div>
 
@@ -436,49 +501,49 @@
 
 
                 <script>
-                let saldoBase = 0;
+                    let saldoBase = 0;
 
-                let metas = [];
+                    let metas = [];
 
-                let metaSelecionada = 0;
-                let saldo = 0;
+                    let metaSelecionada = 0;
+                    let saldo = 0;
 
-                function dinheiro(valor) {
-                    return Number(valor).toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
+                    function dinheiro(valor) {
+                        return Number(valor).toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        });
+                    }
+
+                    function atualizarSaldo() {
+                        const totalGuardado = metas.reduce(
+                            (total, meta) => total + Number(meta.guardado || 0),
+                            0
+                        );
+
+                        saldo = Math.max(saldoBase - totalGuardado, 0);
+                        document.getElementById('saldoDisponivel').textContent =
+                            dinheiro(saldo);
+                    }
+
+                    document.addEventListener('saldo-financeiro-atualizado', (event) => {
+                        saldoBase = Math.max(Number(event.detail.saldo) || 0, 0);
+                        atualizarSaldo();
                     });
-                }
 
-                function atualizarSaldo() {
-                    const totalGuardado = metas.reduce(
-                        (total, meta) => total + Number(meta.guardado || 0),
-                        0
-                    );
+                    function renderizarMetas() {
 
-                    saldo = Math.max(saldoBase - totalGuardado, 0);
-                    document.getElementById('saldoDisponivel').textContent =
-                        dinheiro(saldo);
-                }
+                        const lista = document.getElementById('listaMetas');
 
-                document.addEventListener('saldo-financeiro-atualizado', (event) => {
-                    saldoBase = Math.max(Number(event.detail.saldo) || 0, 0);
-                    atualizarSaldo();
-                });
+                        lista.innerHTML = '';
 
-                function renderizarMetas() {
+                        metas.forEach((meta, index) => {
 
-                    const lista = document.getElementById('listaMetas');
+                            const porcentagem = meta.objetivo > 0 ?
+                                Math.min((meta.guardado / meta.objetivo) * 100, 100) :
+                                0;
 
-                    lista.innerHTML = '';
-
-                    metas.forEach((meta, index) => {
-
-                        const porcentagem = meta.objetivo > 0 ?
-                            Math.min((meta.guardado / meta.objetivo) * 100, 100) :
-                            0;
-
-                        lista.innerHTML += `
+                            lista.innerHTML += `
             <div class="meta-item mb-4">
 
                 <div class="d-flex justify-content-between">
@@ -514,91 +579,91 @@
             </div>
         `;
 
-                    });
+                        });
 
-                    atualizarSaldo();
-                }
-
-                function criarMeta() {
-
-                    const nome = document.getElementById('nomeMeta').value.trim();
-
-                    const objetivo = Number(
-                        document.getElementById('objetivoMeta').value
-                    );
-
-                    if (!nome || !Number.isFinite(objetivo) || objetivo <= 0) {
-                        alert('Preencha o nome e um valor válido para a meta.');
-                        return;
+                        atualizarSaldo();
                     }
 
-                    metas.push({
-                        nome: nome,
-                        objetivo: objetivo,
-                        guardado: 0
-                    });
+                    function criarMeta() {
 
-                    document.getElementById('nomeMeta').value = '';
-                    document.getElementById('objetivoMeta').value = '';
+                        const nome = document.getElementById('nomeMeta').value.trim();
 
-                    bootstrap.Modal.getInstance(
-                        document.getElementById('modalNovaMeta')
-                    ).hide();
+                        const objetivo = Number(
+                            document.getElementById('objetivoMeta').value
+                        );
+
+                        if (!nome || !Number.isFinite(objetivo) || objetivo <= 0) {
+                            alert('Preencha o nome e um valor válido para a meta.');
+                            return;
+                        }
+
+                        metas.push({
+                            nome: nome,
+                            objetivo: objetivo,
+                            guardado: 0
+                        });
+
+                        document.getElementById('nomeMeta').value = '';
+                        document.getElementById('objetivoMeta').value = '';
+
+                        bootstrap.Modal.getInstance(
+                            document.getElementById('modalNovaMeta')
+                        ).hide();
+
+                        renderizarMetas();
+                    }
+
+                    function abrirTransferencia(index) {
+
+                        metaSelecionada = index;
+
+                        document.getElementById('saldoModal').textContent =
+                            dinheiro(saldo);
+
+                        document.getElementById('valorTransferencia').value = '';
+
+                        bootstrap.Modal.getOrCreateInstance(
+                            document.getElementById('modalTransferencia')
+                        ).show();
+                    }
+
+                    function transferirDinheiro() {
+
+                        const valor = Number(
+                            document.getElementById('valorTransferencia').value
+                        );
+
+                        if (!Number.isFinite(valor) || valor <= 0) {
+                            alert('Digite um valor válido.');
+                            return;
+                        }
+
+                        if (valor > saldo) {
+                            alert('Você não possui saldo suficiente.');
+                            return;
+                        }
+
+                        const meta = metas[metaSelecionada];
+
+                        if (meta.guardado + valor > meta.objetivo) {
+                            alert('Esse valor ultrapassa o objetivo da meta.');
+                            return;
+                        }
+
+                        saldo -= valor;
+
+                        meta.guardado += valor;
+
+                        bootstrap.Modal.getInstance(
+                            document.getElementById('modalTransferencia')
+                        ).hide();
+
+                        renderizarMetas();
+
+                        alert('Transferência realizada com sucesso!');
+                    }
 
                     renderizarMetas();
-                }
-
-                function abrirTransferencia(index) {
-
-                    metaSelecionada = index;
-
-                    document.getElementById('saldoModal').textContent =
-                        dinheiro(saldo);
-
-                    document.getElementById('valorTransferencia').value = '';
-
-                    bootstrap.Modal.getOrCreateInstance(
-                        document.getElementById('modalTransferencia')
-                    ).show();
-                }
-
-                function transferirDinheiro() {
-
-                    const valor = Number(
-                        document.getElementById('valorTransferencia').value
-                    );
-
-                    if (!Number.isFinite(valor) || valor <= 0) {
-                        alert('Digite um valor válido.');
-                        return;
-                    }
-
-                    if (valor > saldo) {
-                        alert('Você não possui saldo suficiente.');
-                        return;
-                    }
-
-                    const meta = metas[metaSelecionada];
-
-                    if (meta.guardado + valor > meta.objetivo) {
-                        alert('Esse valor ultrapassa o objetivo da meta.');
-                        return;
-                    }
-
-                    saldo -= valor;
-
-                    meta.guardado += valor;
-
-                    bootstrap.Modal.getInstance(
-                        document.getElementById('modalTransferencia')
-                    ).hide();
-
-                    renderizarMetas();
-
-                    alert('Transferência realizada com sucesso!');
-                }
-
-                renderizarMetas();
                 </script>
 
                 <!-- RESUMO DAS DESPESAS -->

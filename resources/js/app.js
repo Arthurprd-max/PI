@@ -29,20 +29,38 @@ function moeda(valor) {
 
 // ABRIR MODAL
 function abrirModal() {
-    document.getElementById('modal').classList.add('aberto');
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.classList.add('aberto');
+    }
 }
 
 // FECHAR MODAL
 function fecharModal() {
-    document.getElementById('modal').classList.remove('aberto');
+    const modal = document.getElementById('modal');
+    if (modal) {
+        modal.classList.remove('aberto');
+    }
+
+    const modalBootstrap = document.getElementById('exampleModal');
+    if (modalBootstrap && window.bootstrap) {
+        const instancia = bootstrap.Modal.getInstance(modalBootstrap)
+            || bootstrap.Modal.getOrCreateInstance(modalBootstrap);
+        instancia.hide();
+    }
 }
 
 // CALCULAR SALDO
 function calcularSaldo() {
 
-    let renda = Number(document.getElementById('rendas').value) || 0;
+    const rendaInput = document.getElementById('rendas');
+    const despesaInput = document.getElementById('despesas');
+    if (!rendaInput || !despesaInput) {
+        return;
+    }
 
-    let despesa = Number(document.getElementById('despesas').value) || 0;
+    let renda = Number(rendaInput.value) || 0;
+    let despesa = Number(despesaInput.value) || 0;
 
     let saldo = renda - despesa;
 
@@ -69,12 +87,19 @@ function calcularSaldo() {
 }
 
 // ATUALIZAR VALORES
-document.getElementById('rendas').addEventListener('input', calcularSaldo);
-
-document.getElementById('despesas').addEventListener('input', calcularSaldo);
+const rendaInput = document.getElementById('rendas');
+const despesaInput = document.getElementById('despesas');
+if (rendaInput) {
+    rendaInput.addEventListener('input', calcularSaldo);
+}
+if (despesaInput) {
+    despesaInput.addEventListener('input', calcularSaldo);
+}
 
 // CADASTRAR DESPESA
-document.getElementById('formDespesa').addEventListener('submit', function (event) {
+const formDespesa = document.getElementById('formDespesa');
+if (formDespesa) {
+    formDespesa.addEventListener('submit', function (event) {
 
     event.preventDefault();
 
@@ -144,18 +169,8 @@ document.getElementById('formDespesa').addEventListener('submit', function (even
 
     // FECHAR MODAL
     fecharModal();
-});
-
-// ALTERNAR TEMA
-document.getElementById('tema').addEventListener('click', function () {
-
-    document.body.classList.toggle('claro');
-
-    this.textContent = document.body.classList.contains('claro')
-        ? 'Tema escuro'
-        : 'Tema claro';
-
-});
+    });
+}
 
 // CALCULAR AO ABRIR
 calcularSaldo();
