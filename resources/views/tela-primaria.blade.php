@@ -55,6 +55,8 @@
                 </form>
 
             </div>
+
+
             <!-- PAINEL -->
             <div class="col-md-10 p-4 painel-principal">
 
@@ -69,81 +71,62 @@
                         </p>
                     </div>
 
-                    <button type="button" class="btn btn-success botao-nova-despesa" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
 
-                        <i class="bi bi-plus-circle"></i> Nova despesa
-
-                    </button>
 
                 </div>
 
-                <h1>Minhas Rendas</h1>
 
-                @if(session('sucesso'))
-                <p>{{ session('sucesso') }}</p>
-                @endif
+                <!-- MODAL DE RENDA -->
+                <div class="modal fade" id="modalRenda" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <form id="formRenda" class="modal-content" action="{{ route('entradas.store') }}" method="POST">
+                            @csrf
 
-                @if($errors->any())
-                @foreach($errors->all() as $erro)
-                <p>{{ $erro }}</p>
-                @endforeach
-                @endif
+                            <div class="modal-header">
+                                <h5 class="modal-title">Cadastrar renda</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
 
-                <h2>Adicionar nova renda</h2>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nomeRenda" class="form-label">Nome da renda</label>
+                                    <input type="text" id="nomeRenda" name="descricao" class="form-control"
+                                        placeholder="Ex: Salário" required>
+                                </div>
 
-                <form action="{{ route('entradas.store') }}" method="POST">
+                                <div class="mb-3">
+                                    <label for="tipoRenda" class="form-label">Tipo de renda</label>
+                                    <select id="tipoRenda" name="tipo" class="form-select" required>
+                                        <option value="">Selecione</option>
+                                        <option value="fixa">Fixa</option>
+                                        <option value="variavel">Variável</option>
+                                    </select>
+                                </div>
 
-                    <label>Nome da renda</label>
-                    <input type="text" name="descricao" placeholder="Ex: Emprego 1" required>
+                                <div class="mb-3">
+                                    <label for="valorRenda" class="form-label">Valor da renda</label>
+                                    <input type="number" id="valorRenda" name="valor" class="form-control"
+                                        placeholder="R$ 0,00" min="0.01" step="0.01" required>
+                                </div>
 
-                    <label>Valor mensal</label>
-                    <input type="number" name="valor" step="0.01" min="0.01" placeholder="Ex: 1800" required>
+                                <div class="mb-3">
+                                    <label for="dataRenda" class="form-label">Data</label>
+                                    <input type="date" id="dataRenda" name="data" class="form-control"
+                                        value="{{ now()->toDateString() }}" required>
+                                </div>
+                            </div>
 
-                    <label>Tipo de renda</label>
-                    <select name="tipo" required>
-                        <option value="fixa">Renda fixa</option>
-                        <option value="variavel">Renda variável</option>
-                    </select>
-
-                    <button type="submit">Salvar renda</button>
-                </form>
-
-                <hr>
-
-                <h2>Rendas deste mês</h2>
-
-                @foreach($rendasMensais as $renda)
-                <div>
-                    <h3>{{ $renda->descricao }}</h3>
-
-                    @foreach($renda->valoresMensais as $mensal)
-                    <p>
-                        Valor:
-                        R$ {{ number_format($mensal->valor, 2, ',', '.') }}
-                    </p>
-
-                    <p>
-                        {{ $mensal->recebida ? 'Recebida' : 'Aguardando recebimento' }}
-                    </p>
-
-                    <form action="{{ route('rendas.recebida', $mensal) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-
-                        <button type="submit">
-                            {{ $mensal->recebida ? 'Desmarcar recebimento' : 'Marcar como recebida' }}
-                        </button>
-                    </form>
-                    @endforeach
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Cancelar
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    Salvar renda
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <hr>
-                @endforeach
-
-                <h2>
-                    Total de rendas:
-                    R$ {{ number_format($totalRendas, 2, ',', '.') }}
-                </h2>
 
                 <!-- MODAL DE DESPESA -->
                 <div class="modal fade" id="exampleModal" tabindex="-1">
@@ -253,12 +236,19 @@
                     <div class="col-md-4">
 
                         <div class="cartao">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-arrow-up-circle-fill verde"></i>
 
-                            <i class="bi bi-arrow-up-circle-fill verde"></i>
+                                    Rendas
+                                </div>
 
-                            Rendas
-
-                            <input type="number" id="rendas" class="form-control mt-2" value="" min="" step="0.01">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#modalRenda">
+                                    <i class="bi bi-plus-circle"></i> Nova Renda
+                                </button>
+                            </div>
+                            <input type="number" id="rendas" class="form-control mt-2" value="0" min="0" step="0.01">
 
                         </div>
 
@@ -269,12 +259,19 @@
                     <div class="col-md-4">
 
                         <div class="cartao">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-arrow-down-circle-fill vermelho"></i>
+                                    Despesas
+                                </div>
 
-                            <i class="bi bi-arrow-down-circle-fill vermelho"></i>
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    <i class="bi bi-plus-circle"></i> Nova despesa
+                                </button>
+                            </div>
 
-                            Despesas
-
-                            <input type="number" id="despesas" class="form-control mt-2" value="" min="" step="0.01">
+                            <input type="number" id="despesas" class="form-control mt-2" value="0" min="0" step="0.01">
 
                         </div>
 

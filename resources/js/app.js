@@ -42,6 +42,13 @@ function fecharModal() {
         modal.classList.remove('aberto');
     }
 
+    const modalRenda = document.getElementById('modalRenda');
+    if (modalRenda && window.bootstrap) {
+        const instanciaRenda = bootstrap.Modal.getInstance(modalRenda)
+            || bootstrap.Modal.getOrCreateInstance(modalRenda);
+        instanciaRenda.hide();
+    }
+
     const modalBootstrap = document.getElementById('exampleModal');
     if (modalBootstrap && window.bootstrap) {
         const instancia = bootstrap.Modal.getInstance(modalBootstrap)
@@ -94,6 +101,41 @@ if (rendaInput) {
 }
 if (despesaInput) {
     despesaInput.addEventListener('input', calcularSaldo);
+}
+
+// CADASTRAR RENDA
+const formRenda = document.getElementById('formRenda');
+if (formRenda) {
+    formRenda.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const valor = Number(document.getElementById('valorRenda').value);
+        if (valor <= 0) {
+            alert('Digite um valor válido!');
+            return;
+        }
+
+        fetch(formRenda.action, {
+            method: 'POST',
+            body: new FormData(formRenda),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        }).then(function (response) {
+            if (!response.ok) {
+                throw new Error('Não foi possível cadastrar a renda.');
+            }
+
+            const rendaAtual = Number(document.getElementById('rendas').value) || 0;
+            document.getElementById('rendas').value = rendaAtual + valor;
+            calcularSaldo();
+            formRenda.reset();
+            document.getElementById('dataRenda').value = new Date().toISOString().slice(0, 10);
+            fecharModal();
+        }).catch(function () {
+            alert('Não foi possível cadastrar a renda.');
+        });
+    });
 }
 
 // CADASTRAR DESPESA

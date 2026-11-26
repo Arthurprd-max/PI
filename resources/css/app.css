@@ -121,6 +121,10 @@ body {
     transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+.row.g-3.mb-4 > .col-md-4 > .cartao {
+    height: 100%;
+}
+
 .cartao-cabecalho {
     background: var(--cor-menu);
     color: white;

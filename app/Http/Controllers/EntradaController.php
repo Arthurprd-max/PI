@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Entrada;
 use App\Models\EntradaMensal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class EntradaController extends Controller
 {
@@ -58,19 +59,23 @@ class EntradaController extends Controller
             'descricao' => 'required|string|max:255',
             'valor' => 'required|numeric|min:0.01',
             'tipo' => 'required|in:fixa,variavel',
+            'data' => 'nullable|date',
         ]);
 
         $entrada = Entrada::create($dados);
+        $data = isset($dados['data'])
+            ? Carbon::parse($dados['data'])
+            : now();
 
-        // Salva também o valor no mês atual.
+        // Salva também o valor no mês informado.
         $entrada->valoresMensais()->create([
-            'mes' => now()->month,
-            'ano' => now()->year,
+            'mes' => $data->month,
+            'ano' => $data->year,
             'valor' => $entrada->valor,
             'recebida' => false,
         ]);
 
-        return redirect()->route('entradas.index')
+        return redirect()->route('tela-primaria')
             ->with('sucesso', 'Entrada cadastrada com sucesso!');
     }
 
