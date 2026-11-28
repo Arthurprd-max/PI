@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('descricao');
             $table->decimal('valor', 12, 2);
             $table->enum('tipo', ['fixa', 'variavel']);
-            $table->boolean('ativa')->default(true);
+            $table->date('data');
             $table->timestamps();
         });
     }

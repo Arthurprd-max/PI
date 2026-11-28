@@ -14,7 +14,7 @@ class EntradaController extends Controller
         $ano = now()->year;
 
         // Repete as rendas fixas no novo mês.
-        $entradasFixas = Entrada::where('ativa', true)
+        $entradasFixas = Entrada::where(true)
             ->where('tipo', 'fixa')
             ->get();
 
@@ -32,7 +32,7 @@ class EntradaController extends Controller
         }
 
         // Busca todas as entradas do mês.
-        $entradas = Entrada::where('ativa', true)
+        $entradas = Entrada::where(true)
             ->with(['valoresMensais' => function ($query) use ($mes, $ano) {
                 $query->where('mes', $mes)
                     ->where('ano', $ano);

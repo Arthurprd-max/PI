@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Entrada extends Model
 {
@@ -13,16 +13,16 @@ class Entrada extends Model
         'descricao',
         'valor',
         'tipo',
-        'ativa',
+        'data',
+        'user_id'
     ];
 
     protected $casts = [
         'valor' => 'decimal:2',
-        'ativa' => 'boolean',
     ];
 
-    public function valoresMensais(): HasMany
+    public function user()
     {
-        return $this->hasMany('App\\Models\\EntradaMensal');
+        return $this->belongsTo(User::class);
     }
 }

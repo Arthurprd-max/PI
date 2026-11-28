@@ -85,10 +85,9 @@ Route::middleware('auth')->group(function () {
     // TELA PRINCIPAL
     Route::get('/tela-primaria', function () {
 
-        return view('tela-primaria', [
-            'rendasMensais' => collect(),
-            'totalRendas' => 0,
-        ]);
+        $totalEntradas = Auth::user()->entradas()->sum('valor');
+
+        return view('tela-primaria', compact('totalEntradas'));
     })->name('tela-primaria');
 
     // LOGOUT
@@ -119,22 +118,18 @@ Route::get('/tema', function () {
     return back();
 })->name('tema');
 
+
 // ==========================================
 // ENTRADAS / RENDAS
 // ==========================================
 
-// LISTAR ENTRADAS
-Route::get('/entradas', [EntradaController::class, 'index'])
-    ->name('entradas.index');
+Route::middleware('auth')->group(function () {
 
-// ADICIONAR ENTRADA
-Route::post('/entradas', [EntradaController::class, 'store'])
-    ->name('entradas.store');
+    // LISTAR ENTRADAS
+    Route::get('/entradas', [EntradaController::class, 'index'])
+        ->name('entradas.index');
 
-// ATUALIZAR VALOR
-Route::put('/entradas/{entrada}/valor', [EntradaController::class, 'atualizarValor'])
-    ->name('entradas.valor');
-
-// MARCAR COMO RECEBIDA
-Route::patch('/entradas-mensais/{entradaMensal}/recebida', [EntradaController::class, 'recebida'])
-    ->name('entradas.recebida');
+    // ADICIONAR ENTRADA
+    Route::post('/entradas', [EntradaController::class, 'store'])
+        ->name('entradas.store');
+});
